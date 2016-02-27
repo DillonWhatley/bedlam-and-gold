@@ -1,0 +1,23 @@
+{
+  "name": "bag",
+  "version": "1.0.0",
+  "description": "MEAN stack version of Blood and Glory",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DillonWhatley/blood-and-glory.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DillonWhatley/blood-and-glory/issues"
+  },
+  "homepage": "https://github.com/DillonWhatley/blood-and-glory#readme",
+  "dependencies": {
+    "angular2": "^2.0.0-beta.7",
+    "express": "^4.13.4"
+  }
+}

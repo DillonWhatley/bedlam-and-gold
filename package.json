@@ -2,7 +2,7 @@
   "name": "blood-and-glory",
   "version": "1.0.0",
   "scripts": {
-    "start": "concurrent \"npm run tsc:w\" ",
+    "start": "concurrent \"npm run tsc:w\" \"node app.js\"",
     "tsc": "tsc",
     "tsc:w": "tsc -w",
     "typings": "typings",

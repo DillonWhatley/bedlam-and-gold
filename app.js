@@ -1,6 +1,9 @@
 var express = require('express');
+var databaseConfig = require('./config/databaseConfig');
 var app = express();
-var path = require('path');
+
+var mongoose = require('mongoose');
+mongoose.connect(databaseConfig.getMongoURI());
 
 app.use(express.static('public'));
 app.use(express.static('node_modules'));

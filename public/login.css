@@ -1,0 +1,47 @@
+* {
+  font-family: 'Droid Sans', sans-serif;
+  background-color: rgb(35, 66, 53);
+}
+#flex-container {
+  align-content:center;
+  align-items: center;
+
+  color: #FFFFFF;
+  display:flex;
+  flex-flow: row wrap;
+  height: 100vh;
+  justify-content:center;
+}
+#flex-item {
+  border: 1px solid rgb(67, 91, 106);
+  border-radius: 3px;
+  padding: 15px;
+}
+h2 {
+  text-align:center;
+}
+label {
+  display:block;
+  margin:5px;
+  padding:5px;
+  text-align:right;
+}
+input {
+  border: none;
+  background-color: white;
+}
+#submit {
+  margin:5px;
+  padding:5px;
+  text-align:right;
+}
+#submit input {
+  background-color: maroon;
+  border-radius: 2px;
+  color: white;
+  cursor: pointer;
+  padding: 5px 10px;
+}
+#submit input:hover {
+  background-color: rgb(147, 63, 63);
+}

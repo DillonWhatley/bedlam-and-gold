@@ -12,18 +12,20 @@
     <script src="systemjs/dist/system.src.js"></script>
     <script src="rxjs/bundles/Rx.js"></script>
     <script src="angular2/bundles/angular2.dev.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
+    <link href='index.css' rel='stylesheet' type='text/css'>
 
     <!-- 2. Configure SystemJS -->
     <script>
       System.config({
         packages: {
-          app: {
+          'build': {
             format: 'register',
             defaultExtension: 'js'
           }
         }
       });
-      System.import('app/main')
+      System.import('build/main')
             .then(null, console.error.bind(console));
     </script>
 
@@ -31,7 +33,7 @@
 
   <!-- 3. Display the application -->
   <body>
-    <my-app>Loading...</my-app>
+    <my-app></my-app>
   </body>
 
 </html>

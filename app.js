@@ -8,6 +8,10 @@ var app = express();
 var mongoose = require('mongoose');
 mongoose.connect(databaseConfig.getMongoURI());
 
+/* Models */
+var user = require('./model/user')(mongoose);
+var userResource = require('./resource/user-resource')(app, user);
+
 app.use(express.static('public'));
 app.use(express.static('node_modules'));
 app.use(flash());
@@ -46,7 +50,7 @@ var isAuthenticated = function(req, res, next) {
   res.redirect('/login');
 };
 
-app.get('/', isAuthenticated, function(req, res) {
+app.get('/', function(req, res) {
   res.redirect('home.html');
 });
 

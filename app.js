@@ -9,7 +9,7 @@ var mongoose = require('mongoose');
 mongoose.connect(databaseConfig.getMongoURI());
 
 /* Models */
-var user = require('./model/user')(mongoose);
+var user = require('./model/user');
 var userResource = require('./resource/user-resource')(app, user);
 
 app.use(express.static('public'));
@@ -22,9 +22,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(
   function(username, password, done) {
-    User.findOne({
-      username: username
-    }, function(err, user) {
+      user.findOne(function(err, user) {
       if (err) {
         return done(err);
       }
@@ -50,7 +48,7 @@ var isAuthenticated = function(req, res, next) {
   res.redirect('/login');
 };
 
-app.get('/', function(req, res) {
+app.get('/', isAuthenticated, function(req, res) {
   res.redirect('home.html');
 });
 
@@ -68,4 +66,8 @@ app.post('/login',
 
 app.listen(3000, function() {
   console.log('Example app listening on port 3000!');
+  testFunction();
 });
+
+
+var testFunction = function (username, password){user.findOne({'username' : 'Bob'}) }

@@ -20,7 +20,10 @@ app.use(flash());
 app.use(cookieParser());
 app.use(bodyParser());
 app.use(session({
-  secret: 'secretkey1'
+  secret: 'secretkey1',
+  cookie: {
+    maxAge: 60000
+  }
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -47,14 +50,24 @@ passport.use(new LocalStrategy(
   }
 ));
 
+passport.serializeUser(function(user, done) {
+  done(null, user._id);
+});
+
+passport.deserializeUser(function(id, done) {
+  user.findById(id, function(err, user) {
+    done(err, user);
+  });
+});
+
 var isAuthenticated = function(req, res, next) {
-  if (req.isAuthenticated()) {
+  if (req.session.passport && req.session.passport.user) {
     return next();
   }
   res.redirect('/login');
 };
 
-app.get('/', function(req, res) {
+app.get('/', isAuthenticated, function(req, res) {
   res.redirect('home.html');
 });
 
@@ -66,8 +79,7 @@ app.post('/login',
   passport.authenticate('local', {
     successRedirect: '/',
     failureRedirect: '/login',
-    failureFlash: true,
-    session: false
+    failureFlash: true
   }),
   function(req, response) {
     console.log('yo');

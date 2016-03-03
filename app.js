@@ -4,6 +4,8 @@ var flash = require('connect-flash');
 var passport = require('passport'),
   LocalStrategy = require('passport-local').Strategy;
 var session = require('express-session');
+var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
 var app = express();
 var mongoose = require('mongoose');
 mongoose.connect(databaseConfig.getMongoURI());
@@ -15,6 +17,8 @@ var userResource = require('./resource/user-resource')(app, user);
 app.use(express.static('public'));
 app.use(express.static('node_modules'));
 app.use(flash());
+app.use(cookieParser());
+app.use(bodyParser());
 app.use(session({
   secret: 'secretkey1'
 }));
@@ -22,7 +26,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(
   function(username, password, done) {
-      user.findOne(function(err, user) {
+    user.findOne({
+      'username': username
+    }, function(err, user) {
       if (err) {
         return done(err);
       }
@@ -48,7 +54,7 @@ var isAuthenticated = function(req, res, next) {
   res.redirect('/login');
 };
 
-app.get('/', isAuthenticated, function(req, res) {
+app.get('/', function(req, res) {
   res.redirect('home.html');
 });
 
@@ -58,10 +64,14 @@ app.get('/login', function(request, response) {
 
 app.post('/login',
   passport.authenticate('local', {
-    successRedirect: '/home',
+    successRedirect: '/',
     failureRedirect: '/login',
-    failureFlash: true
-  })
+    failureFlash: true,
+    session: false
+  }),
+  function(req, response) {
+    console.log('yo');
+  }
 );
 
 app.listen(3000, function() {
@@ -70,4 +80,8 @@ app.listen(3000, function() {
 });
 
 
-var testFunction = function (username, password){user.findOne({'username' : 'Bob'}) }
+var testFunction = function(username, password) {
+  user.findOne({
+    'username': 'Bob'
+  })
+}

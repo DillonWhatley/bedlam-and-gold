@@ -80,10 +80,7 @@ app.post('/login',
     successRedirect: '/',
     failureRedirect: '/login',
     failureFlash: true
-  }),
-  function(req, response) {
-    console.log('yo');
-  }
+  })
 );
 
 app.listen(3000, function() {
@@ -95,5 +92,5 @@ app.listen(3000, function() {
 var testFunction = function(username, password) {
   user.findOne({
     'username': 'Bob'
-  })
-}
+  });
+};

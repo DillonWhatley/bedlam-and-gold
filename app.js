@@ -11,25 +11,30 @@ var mongoose = require('mongoose');
 mongoose.connect(databaseConfig.getMongoURI());
 
 /* Models */
-var user = require('./model/user');
-var userResource = require('./resource/user-resource')(app, user);
+var userDAO = require('./model/userDAO');
+var userResource = require('./resource/user-resource')(app, userDAO);
 
 app.use(express.static('public'));
 app.use(express.static('node_modules'));
 app.use(flash());
 app.use(cookieParser());
-app.use(bodyParser());
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
+app.use(bodyParser.json());
 app.use(session({
   secret: 'secretkey1',
   cookie: {
     maxAge: 60000
-  }
+  },
+  resave: false,
+  saveUninitialized: false
 }));
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(
   function(username, password, done) {
-    user.findOne({
+    userDAO.User.findOne({
       'username': username
     }, function(err, user) {
       if (err) {
@@ -55,7 +60,7 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(id, done) {
-  user.findById(id, function(err, user) {
+  userDAO.User.findById(id, function(err, user) {
     done(err, user);
   });
 });
@@ -67,12 +72,31 @@ var isAuthenticated = function(req, res, next) {
   res.redirect('/login');
 };
 
-app.get('/', isAuthenticated, function(req, res) {
-  res.redirect('home.html');
+var servePage = function(request, response, fileName) {
+  var options = {
+    root: __dirname + '/public/',
+    dotfiles: 'deny',
+    headers: {
+      'x-timestamp': Date.now(),
+      'x-sent': true
+    }
+  };
+  response.sendFile(fileName, options, function(err) {
+    if (err) {
+      console.log(err);
+      response.status(err.status).end();
+    } else {
+      console.log('Sent:', fileName);
+    }
+  });
+};
+
+app.get('/', isAuthenticated, function(request, response) {
+  servePage(request, response, 'home.html');
 });
 
 app.get('/login', function(request, response) {
-  response.redirect('login.html');
+  servePage(request, response, 'login.html');
 });
 
 app.post('/login',
@@ -85,12 +109,4 @@ app.post('/login',
 
 app.listen(3000, function() {
   console.log('Example app listening on port 3000!');
-  testFunction();
 });
-
-
-var testFunction = function(username, password) {
-  user.findOne({
-    'username': 'Bob'
-  });
-};

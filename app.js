@@ -18,12 +18,17 @@ app.use(express.static('public'));
 app.use(express.static('node_modules'));
 app.use(flash());
 app.use(cookieParser());
-app.use(bodyParser());
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
+app.use(bodyParser.json());
 app.use(session({
   secret: 'secretkey1',
   cookie: {
     maxAge: 60000
-  }
+  },
+  resave: false,
+  saveUninitialized: false
 }));
 app.use(passport.initialize());
 app.use(passport.session());

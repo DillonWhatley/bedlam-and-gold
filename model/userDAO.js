@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
   id: Number,
+  name: String,
   username: String,
   password: String
 });
@@ -16,4 +17,17 @@ userSchema.methods.validPassword = function(password) {
 
 var User = mongoose.model('User', userSchema);
 
-module.exports = User;
+//convenience data access methods
+var userDAO = {
+  User: User,
+  findByName: function(name, callback) {
+    return User.findOne({
+      'name': name
+    }, callback);
+  },
+  create: function(user) {
+    return new User(user);
+  }
+};
+
+module.exports = userDAO;

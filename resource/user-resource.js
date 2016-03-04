@@ -1,13 +1,16 @@
-module.exports = function(app, user) {
+module.exports = function(app, userDAO) {
   if (!app) {
     console.error("Application not initialized.");
   }
-  if (!user) {
+  if (!userDAO) {
     console.error('User model not initialized');
   }
   app.get('/users/:name', function(request, response) {
-    console.log('return users');
-    user.findByName(request.params.name, function(err, user) {
+    userDAO.findByName(request.params.name, function(err, user) {
+      if (err) {
+        console.log(err);
+        response.send('An error has occurred');
+      }
       response.send({
         'data': [user]
       });

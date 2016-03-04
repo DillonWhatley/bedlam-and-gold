@@ -1,27 +1,19 @@
-module.exports = function(mongoose) {
-  if (!mongoose) {
-    console.error("Mongoose not initialized");
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+
+var userSchema = new Schema({
+  id: Number,
+  username: String,
+  password: String
+});
+
+userSchema.methods.validPassword = function(password) {
+  if (password == this.password) {
+    return true;
   }
-  var User = mongoose.model('User', {
-    id: Number,
-    name: String
-  });
-
-  var user = new User({
-    name: 'Bob'
-  });
-  user.save(function(err) {
-    if (err) // ...
-      console.log('user not saved');
-  });
-
-  function findByName(name, callback) {
-    var bob = User.findOne({
-      'name': 'Bob'
-    }, callback);
-  }
-
-  return {
-    findByName: findByName
-  };
+  return false;
 };
+
+var User = mongoose.model('User', userSchema);
+
+module.exports = User;

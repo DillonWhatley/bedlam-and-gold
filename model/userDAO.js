@@ -25,6 +25,11 @@ var userDAO = {
       'name': name
     }, callback);
   },
+  findByUserName: function(username, callback) {
+    return User.findOne({
+      'username': username
+    }, callback);
+  },
   create: function(user) {
     return new User(user);
   }

@@ -11,16 +11,19 @@ import {Http, Response} from 'angular2/http';
     `,
     styles: [`
       div {
-        background-color: maroon;
+        background-color: #60A3A0;
         color:white;
         padding: 5px;
       }
       button {
+        border:none;
         border-radius: 3px;
         color:white;
         cursor: pointer;
         font-weight: bold;
+        margin-left: 145px;
         padding:5px;
+        text-align:right;
       }
       `]
 })

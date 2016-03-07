@@ -8,14 +8,34 @@ import {BagNavbar}      from './components/bag-navbar';
     selector: 'my-app',
     template: `
     <bag-navbar></bag-navbar>
-    <h1>Welcome to Blood &amp; Glory</h1>
-      <ul>
-        <li *ngFor="#user of users">
-          {{ user.name }}
-        </li>
-      </ul>
+    <div id="flex-container">
+      <h1>Welcome to Blood &amp; Glory</h1>
+      <div>
+        <ul>
+          <li *ngFor="#user of users">
+            {{ user.name }}
+          </li>
+        </ul>
+      </div>
+    </div>
     `,
     styles: [`
+      #flex-container {
+        align-content: center;
+        align-items:center;
+        display:flex;
+        flex-flow: column wrap;
+        justify-content:center;
+      }
+      h1 {
+        color:white;
+      }
+      ul {
+        color:white;
+        display:block;
+        list-style:none;
+
+      }
       `],
     providers: [UserService],
     directives: [BagNavbar]

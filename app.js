@@ -151,6 +151,13 @@ app.post('/login',
   })
 );
 
+app.post('/logout', function(req, res) {
+  req.logout();
+  res.send({
+    'data': '/login'
+  });
+});
+
 //route for creating new account
 app.post('/create', uniqueAccount, createAccount, function(request, response) {
   servePage(request, response, 'login.html');

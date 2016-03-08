@@ -8,13 +8,6 @@ var userSchema = new Schema({
   password: String
 });
 
-userSchema.methods.validPassword = function(password) {
-  if (password == this.password) {
-    return true;
-  }
-  return false;
-};
-
 var User = mongoose.model('User', userSchema);
 
 //convenience data access methods
@@ -30,8 +23,12 @@ var userDAO = {
       'username': username
     }, callback);
   },
-  create: function(user) {
-    return new User(user);
+  create: function(user, callback) {
+    var transientUser = new User(user);
+    transientUser.save(function(err) {
+      if (err) throw err;
+      return callback(err, user);
+    });
   }
 };
 

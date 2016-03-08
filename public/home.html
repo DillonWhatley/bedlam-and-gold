@@ -1,5 +1,6 @@
 <html>
   <head>
+    <base href="/">
     <title>Blood and Glory</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -8,9 +9,12 @@
     <script src="es6-shim/es6-shim.min.js"></script>
     <script src="systemjs/dist/system-polyfills.js"></script>
 
+    <script src="/socket.io/socket.io.js"></script>
+
     <script src="angular2/bundles/angular2-polyfills.js"></script>
     <script src="systemjs/dist/system.src.js"></script>
     <script src="rxjs/bundles/Rx.js"></script>
+    <script src="angular2/bundles/router.dev.js"></script>
 
     <script src="angular2/bundles/angular2.dev.js"></script>
     <script src="angular2/bundles/http.dev.js"></script>
@@ -30,12 +34,17 @@
       System.import('build/main')
             .then(null, console.error.bind(console));
     </script>
-
   </head>
 
   <!-- 3. Display the application -->
   <body>
     <my-app></my-app>
   </body>
-
+  <script>
+  var socket = io.connect();
+  socket.on('news', function (data) {
+    console.log(data);
+    socket.emit('my other event', { my: 'data' });
+  });
+  </script>
 </html>

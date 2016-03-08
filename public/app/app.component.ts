@@ -2,19 +2,43 @@ import {Component, OnInit} from 'angular2/core';
 import {Http, Response} from 'angular2/http';
 import {User}              from './services/user';
 import {UserService}       from './services/user-service';
-
+import {BagNavbar}      from './components/bag-navbar';
 
 @Component({
     selector: 'my-app',
     template: `
-    <h1>Hello World</h1>
-      <ul>
-        <li *ngFor="#user of users">
-          {{ user.name }}
-        </li>
-      </ul>
+    <bag-navbar></bag-navbar>
+    <div id="flex-container">
+      <h1>Welcome to Blood &amp; Glory</h1>
+      <div>
+        <ul>
+          <li *ngFor="#user of users">
+            {{ user.name }}
+          </li>
+        </ul>
+      </div>
+    </div>
     `,
-    providers: [UserService]
+    styles: [`
+      #flex-container {
+        align-content: center;
+        align-items:center;
+        display:flex;
+        flex-flow: column wrap;
+        justify-content:center;
+      }
+      h1 {
+        color:white;
+      }
+      ul {
+        color:white;
+        display:block;
+        list-style:none;
+
+      }
+      `],
+    providers: [UserService],
+    directives: [BagNavbar]
 })
 export class AppComponent implements OnInit{
   constructor(private _userService: UserService){}

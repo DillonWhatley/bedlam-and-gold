@@ -34,11 +34,17 @@ var userResource = require('./server/user-component/resource/user-resource')(app
 var pageController = require('./server/page-controller')(app);
 
 io.on('connection', function(socket) {
+  console.log(" a user connected");
   socket.emit('news', {
     hello: 'world'
   });
-  socket.on('my other event', function(data) {
-    console.log(data);
+  socket.on('message', function(data) {
+    socket.emit('server-messages', [
+      data.message
+    ]);
+  });
+  socket.on('disconnect', function() {
+    console.log('user disconnected');
   });
 });
 

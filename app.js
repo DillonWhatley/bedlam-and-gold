@@ -39,7 +39,7 @@ io.on('connection', function(socket) {
     hello: 'world'
   });
   socket.on('message', function(data) {
-    socket.emit('server-messages', [
+    io.emit('server-messages', [
       data.message
     ]);
   });

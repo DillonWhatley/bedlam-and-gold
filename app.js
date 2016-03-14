@@ -31,13 +31,11 @@ app.use(session({
 require('./server/security-component/authentication-initializer')(app);
 var authenticationResource = require('./server/security-component/resource/authentication-resource')(app);
 var userResource = require('./server/user-component/resource/user-resource')(app);
+var gameResource = require('./server/game-component/resource/game-resource')(app, io);
 var pageController = require('./server/page-controller')(app);
 
 io.on('connection', function(socket) {
   console.log(" a user connected");
-  socket.emit('news', {
-    hello: 'world'
-  });
   socket.on('message', function(data) {
     io.emit('server-messages', [
       data.message

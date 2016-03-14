@@ -31,14 +31,18 @@ app.use(session({
 require('./server/security-component/authentication-initializer')(app);
 var authenticationResource = require('./server/security-component/resource/authentication-resource')(app);
 var userResource = require('./server/user-component/resource/user-resource')(app);
+var gameResource = require('./server/game-component/resource/game-resource')(app, io);
 var pageController = require('./server/page-controller')(app);
 
 io.on('connection', function(socket) {
-  socket.emit('news', {
-    hello: 'world'
+  console.log(" a user connected");
+  socket.on('message', function(data) {
+    io.emit('server-messages', [
+      data.message
+    ]);
   });
-  socket.on('my other event', function(data) {
-    console.log(data);
+  socket.on('disconnect', function() {
+    console.log('user disconnected');
   });
 });
 

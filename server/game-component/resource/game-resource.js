@@ -17,9 +17,11 @@ module.exports = function(app, io) {
       });
       setInterval(function() {
         var events = [];
-        events.push('Something happened');
+        for (var i = 0; i < 10; i++) {
+          events = events.concat(gameService.processEvent(game, null, null));
+        }
         gameInstance.emit('game-world-event', events);
-      }, 1000);
+      }, 100);
       response.send({
         'data': game.id
       });

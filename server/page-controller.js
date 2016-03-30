@@ -32,5 +32,9 @@ module.exports = function(app) {
   app.get('/create', function(request, response) {
     servePage(request, response, 'create.html');
   });
+  
+   app.get('/account', authenticationInterceptor, function(request, response) {
+    servePage(request, response, 'account.html');
+  });
 
 };

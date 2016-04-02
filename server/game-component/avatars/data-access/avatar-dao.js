@@ -8,16 +8,18 @@ var AvatarSchema = new Schema({
   attackPower: Number,
   defensePower: Number,
   level: Number,
-  avatarClass: String
+  avatarClass: String,
+  userId: String
 });
 
 var Avatar = mongoose.model('avatar', AvatarSchema);
 
 var avatarDAO = {
   Avatar: Avatar,
-  findByName: function(name, callback) {
+  findByNameAndUserId: function(name, userId, callback) {
     return Avatar.findOne({
-      'name': name
+      'name': name,
+      'userId': userId
     }, callback);
   },
   save: function(avatar, callback) {

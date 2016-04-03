@@ -1,12 +1,22 @@
-import {Component} from 'angular2/core';
+import {Component, OnInit} from 'angular2/core';
 import {Injectable}     from 'angular2/core';
 import {Http, Response} from 'angular2/http';
+import {Avatar} from '../model/avatar';
+import {InventoryItem} from '../model/inventory-item';
+import {AvatarService} from '../services/avatar-service';
 
 @Component({
-    selector: 'bag-navbar',
+    selector: 'avatar-creation',
     template: `
-    <div>
-    <button id="logOutButton" (click)="logOut()">Logout</button>
+    <div >
+      <h1>Avatar Creation</h1>
+      <ul>
+        <li *ngFor="#avatar of avatars">
+          <div>
+            {{avatar.name}}
+          </div>
+        </li>
+      </ul>
     </div>
     `,
     styles: [`
@@ -16,23 +26,32 @@ import {Http, Response} from 'angular2/http';
         padding: 5px;
         height: 25px;
       }
-      `]
+      `],
+      providers: [AvatarService]
 })
-export class BagNavbar {
-    constructor(private http: Http) { }
+export class AvatarCreationComponent implements OnInit{
+    private newAvatar: Avatar;
+    private avatars: Avatar[];
+    private errorMessage: string;
 
-    logOut() {
-        return this.http.post('/logout', '').map(res => res.json().data)
-            .subscribe(data => this.handleResponse(data),
-            error => this.handleError(error));
+    constructor(private http: Http, private avatarService: AvatarService) { }
+
+
+    createAvatar() {
+        this.avatarService.createAvatar(this.newAvatar).subscribe(
+          () =>  this.findAvatars(),
+          error => this.errorMessage = <any>error
+        );
+    }
+    findAvatars() {
+      this.avatarService.findAvatars().subscribe(
+        avatars => this.avatars = avatars,
+        error =>  this.errorMessage = <any>error);
     }
 
-   handleResponse(data) {
-        window.location.href = "/login";
-    }
-
-    handleError(error) {
-        console.log(error);
+    ngOnInit() {
+      console.log("retrieving avatars");
+      this.findAvatars();
     }
 
 }

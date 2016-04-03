@@ -29,6 +29,23 @@ module.exports = function(app, io) {
     });
   });
 
+  app.get('/avatars', authenticationInterceptor, function(request, response) {
+    response.send({
+      'data': [{
+        'id': 1,
+        'name': 'MainChar',
+        'avatarClass': 'Warrior',
+        'strength': 10,
+        'dexterity': 10,
+        'intelligence': 10,
+        'luck': 10,
+        'endurance': 10,
+        'charisma': 10,
+        'inventory': []
+      }]
+    });
+  });
+
   app.post('/avatars', authenticationInterceptor, function(request, response) {
     avatarService.create(request.body, function(err, avatar) {
       if (err) {

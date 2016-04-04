@@ -18,8 +18,8 @@ module.exports = function(app) {
   });
 
   //Get a user by their name
-  app.get('/users/:name', authenticationInterceptor, function(request, response) {
-    var user = userService.getByName(request.params.name, function(err, user) {
+  app.get('/users/:username', authenticationInterceptor, function(request, response) {
+    var user = userService.findByUsername(request.params.username, function(err, user) {
       if (err) {
         console.log(err);
         response.sendStatus(500).send('Could not find user by name');

@@ -20,8 +20,8 @@ UserService.prototype.validateUsername = function(user, callback) {
   }, serviceCallback);
 };
 
-UserService.prototype.getByName = function(name, callback) {
-  return userDAO.findByName(name, callback);
+UserService.prototype.findByUsername = function(name, callback) {
+  return userDAO.findByUsername(name, callback);
 };
 
 module.exports = new UserService();

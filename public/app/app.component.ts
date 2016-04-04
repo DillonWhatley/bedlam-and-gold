@@ -5,9 +5,8 @@ import {User}              from './services/user';
 import {UserService}       from './services/user-service';
 import {GameService}       from './services/game-service';
 import {BagNavbar}      from './components/bag-navbar';
-import {AccountComponent}      from './components/my-account';
+import {AccountComponent}      from './components/account/my-account';
 import {GameComponent}    from './components/game';
-import {AvatarCreationComponent} from './components/avatar-creation';
 
 @Component({
     selector: 'my-app',
@@ -18,7 +17,6 @@ import {AvatarCreationComponent} from './components/avatar-creation';
         </div>
         <nav id="navbar">
           <a [routerLink]="['Game']">Game</a>
-          <a [routerLink]="['AvatarCreation']">Avatar Creation</a>
           <a [routerLink]="['MyAccount']">My Account</a>
         </nav>
     </div>
@@ -56,8 +54,7 @@ import {AvatarCreationComponent} from './components/avatar-creation';
 })
 @RouteConfig([
     { path: '/', name: 'Game', component: GameComponent, useAsDefault: true },
-    { path: '/account', name: 'MyAccount', component: AccountComponent },
-    { path: '/avatars', name: 'AvatarCreation', component: AvatarCreationComponent }
+    { path: '/account', name: 'MyAccount', component: AccountComponent }
 ])
 export class AppComponent {
     public title = 'Blood and Glory';

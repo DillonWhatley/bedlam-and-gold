@@ -4,7 +4,6 @@ import {Http, Response} from 'angular2/http';
 import {User}              from './services/user';
 import {UserService}       from './services/user-service';
 import {GameService}       from './services/game-service';
-import {BagNavbar}      from './components/bag-navbar';
 import {AccountComponent}      from './components/account/my-account';
 import {GameComponent}    from './components/game';
 
@@ -12,50 +11,84 @@ import {GameComponent}    from './components/game';
     selector: 'my-app',
     template: `
     <div>
-        <div>
-             <bag-navbar></bag-navbar>
+      <nav>
+        <div class="left">
+          <button [routerLink]="['Game']">Game</button>
+          <button [routerLink]="['MyAccount']">My Account</button>
         </div>
-        <nav id="navbar">
-          <a [routerLink]="['Game']">Game</a>
-          <a [routerLink]="['MyAccount']">My Account</a>
-        </nav>
+        <div class="right">
+          <button id="logOutButton" (click)="logOut()">Logout</button>
+        </div>
+      </nav>
     </div>
     <router-outlet></router-outlet>
     `,
     styles: [`
-    #navbar {
+      button {
+        background-color: #0f7a76;
+        border:1px solid #2d807c;
+        border-radius: 3px;
+        color: lightgoldenrodyellow;
+        cursor: pointer;
+        font-weight: bold;
+        margin: 5px 10px;
+        padding:5px;
+        transition: border 0.3s, color 0.3s;
+      }
+      button:hover {
+        border:1px solid rgb(114, 200, 141);
         color:white;
-        padding: 5px;
-        align-content: center;
-        align-items:center;
+      }
+      div {
+        background-color:inherit;
+      }
+      #logOutButton{
+          margin-right: 5px;
+      }
+      .left {
+        display:flex;
+        justify-content:flex-start;
+        flex-flow:row wrap;
+      }
+      nav {
+        align-content:center;
+        align-items: center;
+        background-color: #073c3a;
+        background: linear-gradient(left, #073c3a, #124a48 );
+        color:white;
         display:flex;
         flex-flow: row wrap;
-        justify-content:center;
+        padding: 5px;
       }
-      a {
-        font-weight: bold;
-        outline:none;
-        padding: 5px 15px;
-        text-decoration: none;
-      }
-      a:link {
-        color: #FF355E;
-        font-weight: bold;
-      }
-      a:visited {
-        color:rgb(60, 173, 119);
-      }
-      a:hover {
-        color:rgb(176, 39, 39)
+      .right {
+        display:flex;
+        justify-content:flex-end;
+        flex-flow:row wrap;
+        flex-grow:1;
       }
     `],
-    directives: [BagNavbar, ROUTER_DIRECTIVES],
+    directives: [ ROUTER_DIRECTIVES],
     providers: [UserService, GameService, ROUTER_PROVIDERS]
 })
 @RouteConfig([
-    { path: '/', name: 'Game', component: GameComponent, useAsDefault: true },
-    { path: '/account', name: 'MyAccount', component: AccountComponent }
+    { path: '/pages/game', name: 'Game', component: GameComponent, useAsDefault: true },
+    { path: '/pages/account', name: 'MyAccount', component: AccountComponent }
 ])
 export class AppComponent {
     public title = 'Blood and Glory';
+    constructor(private http: Http) { }
+
+    logOut() {
+        return this.http.post('/logout', '').map(res => res.json().data)
+            .subscribe(data => this.handleResponse(data),
+            error => this.handleError(error));
+    }
+
+   handleResponse(data) {
+        window.location.href = "/login";
+    }
+
+    handleError(error) {
+        console.log(error);
+    }
 }

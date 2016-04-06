@@ -1,6 +1,7 @@
 * {
+  background-color:#021f24;
+  background: linear-gradient(left, #021f24, #0d3941 );
   font-family: 'Droid Sans', sans-serif;
-  background-color: rgb(35, 66, 53);
   margin:0;
   padding:0;
 }

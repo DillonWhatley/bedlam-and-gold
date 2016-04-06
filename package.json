@@ -1,5 +1,5 @@
 {
-  "name": "blood-and-glory",
+  "name": "bedlam-and-gold",
   "version": "1.0.0",
   "scripts": {
     "start": "concurrent \"npm run tsc:w\" \"node app.js\"",

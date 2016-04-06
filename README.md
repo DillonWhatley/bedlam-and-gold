@@ -1,2 +1,2 @@
-# blood-and-glory
-MEAN stack version of Blood and Glory
+# bedlam-and-gold
+MEAN stack version of Bedlam and Gold

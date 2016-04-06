@@ -7,12 +7,11 @@ import { Router } from 'angular2/router';
 
 declare var io: any;
 @Component({
-    selector: 'my-app',
+    selector: 'bag-game',
     template: `
    <div id="flex-container">
-      <h1>Welcome to Blood &amp; Glory</h1>
+      <h1>Welcome to Bedlam & Gold</h1>
       <div id="server-messages">
-        <div>Game</div>
         <ul>
           <li *ngFor="#message of serverMessages">{{message}}</li>
         </ul>
@@ -33,15 +32,20 @@ declare var io: any;
       * {
         color:white;
       }
-      #create-game {
-        background-color:rgb(59, 77, 153);
-        border:none;
-        color:rgb(217, 216, 221);
+      button {
+        background-color: #0f7a76;
+        border:1px solid #2d807c;
+        border-radius: 3px;
+        color: lightgoldenrodyellow;
+        cursor: pointer;
+        font-weight: bold;
+        margin: 5px 10px;
         padding:5px;
-        transition: background-color 0.3s;
+        transition: border 0.3s, color 0.3s;
       }
-      #create-game:hover {
-        background-color:rgb(143, 142, 15);
+      button:hover {
+        border:1px solid rgb(114, 200, 141);
+        color:white;
       }
       #flex-container {
         align-content: center;
@@ -51,6 +55,8 @@ declare var io: any;
         justify-content:center;
       }
       h1 {
+        margin:15px 0px;
+        font-size: 22px;
         color:white;
       }
       li {

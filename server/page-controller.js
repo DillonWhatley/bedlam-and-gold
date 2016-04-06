@@ -25,16 +25,16 @@ module.exports = function(app) {
     servePage(request, response, 'home.html');
   });
 
+  app.get('/pages/*', authenticationInterceptor, function(request, response) {
+    servePage(request, response, 'home.html');
+  });
+
   app.get('/login', function(request, response) {
     servePage(request, response, 'login.html');
   });
 
   app.get('/create', function(request, response) {
     servePage(request, response, 'create.html');
-  });
-  
-   app.get('/account', authenticationInterceptor, function(request, response) {
-    servePage(request, response, 'account.html');
   });
 
 };

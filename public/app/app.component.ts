@@ -4,7 +4,7 @@ import {Http, Response} from 'angular2/http';
 import {User}              from './services/user';
 import {UserService}       from './services/user-service';
 import {GameService}       from './services/game-service';
-import {AccountComponent}      from './components/account/my-account';
+import {AccountComponent}      from './components/my-account';
 import {GameComponent}    from './components/game';
 
 @Component({
@@ -75,7 +75,7 @@ import {GameComponent}    from './components/game';
     { path: '/pages/account', name: 'MyAccount', component: AccountComponent }
 ])
 export class AppComponent {
-    public title = 'Blood and Glory';
+    public title = 'Bedlam and Gold';
     constructor(private http: Http) { }
 
     logOut() {

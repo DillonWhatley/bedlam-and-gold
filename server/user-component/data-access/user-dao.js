@@ -4,7 +4,9 @@ var Schema = mongoose.Schema;
 var userSchema = new Schema({
   id: Number,
   username: String,
-  password: String
+  password: String,
+  friendRequests: [String],
+  friends: [String]
 });
 
 var User = mongoose.model('User', userSchema);

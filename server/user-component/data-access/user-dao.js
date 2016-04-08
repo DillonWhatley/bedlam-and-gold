@@ -2,9 +2,9 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
-  id: Number,
   username: String,
-  password: String
+  password: String,
+  inventory: Array
 });
 
 var User = mongoose.model('User', userSchema);
@@ -19,7 +19,7 @@ var userDAO = {
   },
   create: function(user, callback) {
     var transientUser = new User(user);
-    transientUser.save(function(err) {
+    transientUser.save(function(err, user) {
       if (err) throw err;
       return callback(err, user);
     });

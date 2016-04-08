@@ -9,7 +9,7 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var port = 3000;
 var mongoose = require('mongoose');
-mongoose.connect(databaseConfig.getMongoURI());
+var con = mongoose.connect(databaseConfig.getMongoURI());
 
 app.use(express.static('public'));
 app.use(express.static('node_modules'));
@@ -45,6 +45,34 @@ io.on('connection', function(socket) {
     console.log('user disconnected');
   });
 });
+
+mongoose.connection.on('open', function() {
+  con.connection.db.dropDatabase();
+  var username = "bob";
+  var userService = require('./server/user-component/service/user-service');
+  userService.createUser({
+    "username": username,
+    "password": "slob",
+    "inventory": []
+  }, function(err, user) {
+    console.log("created: " + user.username);
+  });
+  var inventoryService = require('./server/inventory-component/service/inventory-service');
+  inventoryService.create({
+    "name": "Gold"
+  }, function(err, inventoryItem) {
+    console.log("created gold");
+    console.log(inventoryItem);
+    var inventory = [{
+      inventoryItemId: inventoryItem.id,
+      count: 1
+    }];
+    userService.updateUserInventory(username, inventory);
+
+  });
+});
+
+
 
 server.listen(port, function() {
   console.log('Server listening at port %d', port);

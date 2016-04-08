@@ -24,4 +24,16 @@ UserService.prototype.findByUsername = function(name, callback) {
   return userDAO.findByUsername(name, callback);
 };
 
+UserService.prototype.updateUserInventory = function(username, updatedUserInventory) {
+  userDAO.findByUsername(username, function(err, user) {
+    user.update({
+      inventory: updatedUserInventory
+    }, function(err, raw) {
+      if (err) {
+        console.log(err);
+      }
+    });
+  });
+};
+
 module.exports = new UserService();

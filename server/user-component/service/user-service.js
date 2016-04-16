@@ -24,4 +24,9 @@ UserService.prototype.findByUsername = function(name, callback) {
   return userDAO.findByUsername(name, callback);
 };
 
+UserService.prototype.sendFriendRequest = function(sendee, recipient, callback){
+    console.log("Server UserService Sending Friend Request.");
+    return userDao.sendFriendRequest(sendee, recipient, callback);
+};
+
 module.exports = new UserService();

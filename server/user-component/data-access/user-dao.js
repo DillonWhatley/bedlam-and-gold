@@ -25,6 +25,12 @@ var userDAO = {
       if (err) throw err;
       return callback(err, user);
     });
+  },
+  sendFriendRequest: function(sendee, recipient, callback){
+      var transientRecipient = User.findOne({
+          'username': recipient
+      });
+      return transientRecipient.friendRequests.addToSet({sendee}, callback);
   }
 };
 

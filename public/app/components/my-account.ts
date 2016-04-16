@@ -93,6 +93,7 @@ export class AccountComponent {
             error => this.errorMessage = <any>error);
     }
     addFriend(tempFriend: string){
+        console.log("Button Press worked");
         this.userService.requestFriend(tempFriend);
     }
 

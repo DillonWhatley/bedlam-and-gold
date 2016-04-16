@@ -7,12 +7,15 @@ import {User}           from './user';
 
 @Injectable()
 export class UserService {
-  tempUserUrl: string;  
+  tempUserUrl: string;
+  private headers: Headers;
+  private _usersUrl = '/users/Bob';  // URL to web api  
     
-  constructor (private http: Http) {}
-
-  private _usersUrl = '/users/Bob';  // URL to web api
-
+  constructor (private http: Http) {
+      this.headers = new Headers();
+      this.headers.append('Content-Type', 'application/json');
+  }
+  
   getUsers () {
     return this.http.get(this._usersUrl)
                     .map(res => <User[]> res.json().data)
@@ -29,8 +32,15 @@ export class UserService {
   }
   
   requestFriend(user:string){
-      this.tempUserUrl = '/users/'+user;
-      return this.http.post(this.tempUserUrl)
+      console.log(user);
+      this.tempUserUrl = '/friends/'+user;
+      let body = JSON.stringify(user);
+      let headers = new Headers({ 'Content-Type': 'application/json' });
+      let options = new RequestOptions({ headers: headers });
+      return this.http.put(this.tempUserUrl, body, options)
+                        .map(res => <String> res.json().data)
+                        .do(data => console.log(data))
+                        .catch(this.handleError);
   }
   
   private handleError (error: Response) {

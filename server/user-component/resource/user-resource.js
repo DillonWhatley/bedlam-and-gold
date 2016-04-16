@@ -41,7 +41,7 @@ module.exports = function(app) {
                 response.sendStatus(500).send('Could not find user by name');
             }
             response.send({
-                'username': [request.body.username]
+                'data': [user]
             });
         });
     });

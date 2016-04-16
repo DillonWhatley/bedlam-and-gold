@@ -31,7 +31,7 @@ export class UserService {
                       .catch(this.handleError);
   }
   
-  requestFriend(user:string){
+  requestFriend(user){
       console.log(user);
       this.tempUserUrl = '/friends/'+user;
       let body = JSON.stringify(user);
@@ -39,7 +39,7 @@ export class UserService {
       let headers = new Headers({ 'Content-Type': 'application/json' });
       let options = new RequestOptions({ headers: headers });
       return this.http.put(this.tempUserUrl, body, options)
-                        .map(res => <String> res.json().data)
+                        .map(res => <User[]> res.json().data)
                         .do(data => console.log(data))
                         .catch(this.handleError);
   }

@@ -94,7 +94,10 @@ export class AccountComponent {
     }
     addFriend(tempFriend: string){
         console.log("Button Press worked");
-        this.userService.requestFriend(tempFriend);
+        var Friend = {'username': tempFriend};
+        this.userService.requestFriend(Friend).subscribe(
+                       users => this.users = users,
+                       error =>  this.errorMessage = <any>error);
     }
 
 }

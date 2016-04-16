@@ -35,6 +35,7 @@ export class UserService {
       console.log(user);
       this.tempUserUrl = '/friends/'+user;
       let body = JSON.stringify(user);
+      console.log(body);
       let headers = new Headers({ 'Content-Type': 'application/json' });
       let options = new RequestOptions({ headers: headers });
       return this.http.put(this.tempUserUrl, body, options)

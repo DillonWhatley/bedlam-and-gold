@@ -33,7 +33,8 @@ module.exports = function(app) {
     //Send friend request from req.user to attached username
     app.put('/friends/:username', authenticationInterceptor, function(request, response) {
         console.log("picked up at the endpoint");
-        var sendee = req.user;
+        console.log(request.body);
+        var sendee = request.user;
         userService.sendFriendRequest(sendee, request.body.username, function(err, request) {
             if (err) {
                 console.log(err);

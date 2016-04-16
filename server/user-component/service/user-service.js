@@ -25,8 +25,11 @@ UserService.prototype.findByUsername = function(name, callback) {
 };
 
 UserService.prototype.sendFriendRequest = function(sendee, recipient, callback){
+    var sendeeName = sendee.username;
     console.log("Server UserService Sending Friend Request.");
-    return userDao.sendFriendRequest(sendee, recipient, callback);
+    console.log("sendee: "+ sendeeName + " recipient: " + recipient);
+    
+    return userDAO.sendFriendRequest(sendeeName, recipient, callback);
 };
 
 module.exports = new UserService();

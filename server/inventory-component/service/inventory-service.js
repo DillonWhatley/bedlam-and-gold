@@ -2,7 +2,6 @@ var inventoryItemDAO = require('../data-access/inventory-item-dao');
 var InventoryService = function() {};
 
 InventoryService.prototype.create = function(inventoryItem, callback) {
-  console.log(inventoryItem);
   inventoryItemDAO.create(inventoryItem, callback);
 };
 

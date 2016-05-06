@@ -15,6 +15,16 @@ var inventoryItemDAO = {
       '_id': id
     }, callback);
   },
+  findByIds: function(ids, callback) {
+    return InventoryItem.find({
+      '_id': {
+        $in: ids
+      }
+    }, function(err, inventoryItems) {
+      if (err) throw err;
+      return callback(err, inventoryItems);
+    });
+  },
   create: function(inventoryItem, callback) {
     var transientInventoryItem = new InventoryItem(inventoryItem);
     transientInventoryItem.save(function(err, inventoryItem) {

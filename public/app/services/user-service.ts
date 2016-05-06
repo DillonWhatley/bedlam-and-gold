@@ -10,6 +10,7 @@ export class UserService {
   tempUserUrl: string;
   private headers: Headers;
   private _usersUrl = '/users/Bob';  // URL to web api  
+  private tempUrl;
     
   constructor (private http: Http) {
       this.headers = new Headers();
@@ -38,10 +39,45 @@ export class UserService {
       console.log(body);
       let headers = new Headers({ 'Content-Type': 'application/json' });
       let options = new RequestOptions({ headers: headers });
-      return this.http.put(this.tempUserUrl, body, options)
+      return this.http.post(this.tempUserUrl, body, options)
                         .map(res => <User[]> res.json().data)
                         .do(data => console.log(data))
                         .catch(this.handleError);
+  }
+  // TODO: Retrieve pending requests
+  findRequests(){    
+    this.tempUrl = '/friend-requests';
+    console.log("user-service client side");
+    return this.http.get(this.tempUrl)
+                    .map(res => <User[]> res.json().data)
+                     .do(data => console.log(data))
+                    .catch(this.handleError);
+  }
+  
+  
+  
+  // TODO: acceptFriend http PUT to url+
+  acceptRequest(newFriend){
+    this.tempUrl = '/users/friend-requests'
+    let body = JSON.stringify(newFriend);
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    return this.http.post(this.tempUrl, body, options)
+                      .map(res => <String> res.json().data)
+                      .do(data => console.log(data))
+                      .catch(this.handleError);
+    
+  }
+  denyRequest(newFriend){
+    this.tempUrl = '/friends-deny'
+    let body = JSON.stringify(newFriend);
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    return this.http.post(this.tempUrl, body, options)
+                      .map(res => <String> res.json().data)
+                      .do(data => console.log(data))
+                      .catch(this.handleError);
+    
   }
   
   private handleError (error: Response) {

@@ -15,11 +15,24 @@ import {UserService}  from '../services/user-service';;
                     <div>
                         <ul>
                         <li *ngFor="#user of users">
+                        <!-- TODO: Only display add friend if request not sent/not already friends (check some property thats bound during name search)-->
                             {{ user.username }} <button (click)="addFriend(user.username)" id="add-user">Add Friend!</button>
                         </li>
                         </ul>
                     </div>
             </div>
+            <div id="pending-requests">
+            <h3>Pending Friend Requests - </h3>
+                <div *ngIf="requests">
+                        <ul>
+                        <li *ngFor="#request of requests.friendRequests">
+                        <!-- TODO: Only display add friend if request not sent/not already friends (check some property thats bound during name search)-->
+                           {{ request }} <button (click)="acceptRequest(request)" id="accept-request">Accept Friend!</button> <button (click)="denyRequest(request)" id="deny-request">Deny Request</button>
+                        </li>
+                        </ul>
+                    </div>
+                </div>
+             <!-- TODO: Add pending friend requests section-->
         </div>
     `,
     styles: [`   
@@ -55,6 +68,9 @@ import {UserService}  from '../services/user-service';;
         #friend-search {
             align-content: left;
         }   
+        #pending-requests {
+            margin-top: 20px;
+        }
          
         h2 {
             color: antiquewhite;
@@ -82,9 +98,11 @@ export class AccountComponent {
     errorMessage: string;
     userFound: boolean;
     users: User[];
+    requests: User[];
 
     constructor(private userService: UserService, private _router: Router) {
         this.userFound = false;
+        this.findRequests();
     }
 
     findUser(tempUser: string) {
@@ -98,6 +116,28 @@ export class AccountComponent {
         this.userService.requestFriend(Friend).subscribe(
                        users => this.users = users,
                        error =>  this.errorMessage = <any>error);
+    }
+    findRequests(){
+        console.log("sup homies searching for requests");
+        this.userService.findRequests().subscribe(
+                       requests => this.requests = requests,
+                       error =>  this.errorMessage = <any>error);
+        
+    }
+        
+    acceptRequest(tempFriend: string){
+        var Friend = {'username': tempFriend};
+        this.userService.acceptRequest(Friend).subscribe(
+                       error =>  this.errorMessage = <any>error);
+        this.findRequests();               
+    }
+    
+    denyRequest(tempFriend: string){
+        console.log("deny request component");
+        var Friend = {'username': tempFriend};
+         this.userService.denyRequest(Friend).subscribe(
+                       error =>  this.errorMessage = <any>error);
+        this.findRequests();
     }
 
 }

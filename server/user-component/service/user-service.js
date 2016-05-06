@@ -24,6 +24,7 @@ UserService.prototype.findByUsername = function(name, callback) {
   return userDAO.findByUsername(name, callback);
 };
 
+// TODO: modify method to use userDAO methods to first check that user is not already friends/no pending request
 UserService.prototype.sendFriendRequest = function(sendee, recipient, callback){
     var sendeeName = sendee.username;
     console.log("Server UserService Sending Friend Request.");
@@ -31,5 +32,20 @@ UserService.prototype.sendFriendRequest = function(sendee, recipient, callback){
     
     return userDAO.sendFriendRequest(sendeeName, recipient, callback);
 };
+
+// TODO: Add method that returns pending friend requests
+UserService.prototype.findPendingRequests = function(sendee, callback){
+  return userDAO.findPendingRequests(sendee, callback);
+};
+
+// TODO: Add method that uses userDAO and accepts friend request
+UserService.prototype.acceptFriend = function(sendee, newFriend, callback){
+  return userDAO.acceptFriend(sendee, newFriend, callback);
+};
+UserService.prototype.denyFriend = function(sendee, newFriend, callback){
+  return userDAO.denyFriend(sendee, newFriend, callback);
+};
+
+
 
 module.exports = new UserService();

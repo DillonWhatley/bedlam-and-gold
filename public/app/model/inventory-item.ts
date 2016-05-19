@@ -1,5 +1,5 @@
 export interface InventoryItem {
-  id: number;
+  _id: number;
   name: string;
   count: number;
 }

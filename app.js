@@ -32,6 +32,7 @@ require('./server/security-component/authentication-initializer')(app);
 var authenticationResource = require('./server/security-component/resource/authentication-resource')(app);
 var userResource = require('./server/user-component/resource/user-resource')(app);
 var gameResource = require('./server/game-component/resource/game-resource')(app, io);
+var inventoryResource = require('./server/inventory-component/resource/inventory-resource')(app);
 var pageController = require('./server/page-controller')(app);
 
 io.on('connection', function(socket) {

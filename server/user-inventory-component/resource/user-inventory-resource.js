@@ -23,7 +23,7 @@ module.exports = function(app) {
   });
 
   //Get a user by their name
-  app.get('/users/:username/inventory', authenticationInterceptor, function(request, response) {
+  app.get('/users/:username/inventoryItems', authenticationInterceptor, function(request, response) {
     var user = userService.findByUsername(request.params.username, function(err, user) {
       if (err) {
         console.log(err);

@@ -2,14 +2,13 @@ import {Component, OnInit} from 'angular2/core';
 import {Http, Response} from 'angular2/http';
 import {InventoryItem}              from '../../../model/inventory-item';
 import {InventoryService}       from '../../../services/inventory-service';
-import { Router } from 'angular2/router';
 
 @Component({
     selector: 'bag-inventory',
     template: `
    <div id="flex-container">
         <ul>
-          <li *ngFor="#item of inventory">
+          <li *ngFor="#item of inventoryItems">
             <div>{{item.name}}: {{item.count}}</div>
           </li>
         </ul>
@@ -17,13 +16,14 @@ import { Router } from 'angular2/router';
     `,
     styles: [`
 
-      `]
+      `],
+      providers: [InventoryService]
 })
-export class InventoryComponent implements OnInit{
+export class InventoryList implements OnInit{
   errorMessage: string;
   inventoryItems: InventoryItem[];
 
-  constructor(private inventoryService: InventoryService, private _router: Router){
+  constructor(private inventoryService: InventoryService){
   }
 
   ngOnInit() {

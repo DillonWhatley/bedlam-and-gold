@@ -4,7 +4,6 @@ var Schema = mongoose.Schema;
 var inventoryItemSchema = new Schema({
   name: String
 });
-
 var InventoryItem = mongoose.model('InventoryItem', inventoryItemSchema);
 
 //convenience data access methods
@@ -15,12 +14,13 @@ var inventoryItemDAO = {
       '_id': id
     }, callback);
   },
+  //Returns plain JSON instead of Mongo documents with mongoose proxies
   findByIds: function(ids, callback) {
     return InventoryItem.find({
       '_id': {
         $in: ids
       }
-    }, function(err, inventoryItems) {
+    }).lean(true).find(function(err, inventoryItems) {
       if (err) throw err;
       return callback(err, inventoryItems);
     });

@@ -19,14 +19,14 @@ InventoryService.prototype.findByUser = function(user, callback) {
   var inventoryItemIds = [];
   var inventoryItemIdToCount = {};
   user.inventory.forEach(function(inventoryItemReference) {
-    inventoryItemIds.push(inventoryItemReference.id);
-    inventoryItemIdToCount[inventoryItemReference.id] = inventoryItemReference.count;
+    inventoryItemIds.push(inventoryItemReference.inventoryItemId);
+    inventoryItemIdToCount[inventoryItemReference.inventoryItemId] = inventoryItemReference.count;
   });
-  inventoryItemDAO.findByIds(inventoryItemIds, function(error, inventoryItems) {
+  inventoryItemDAO.findByIds(inventoryItemIds, function(err, inventoryItems) {
     inventoryItems.forEach(function(item) {
-      item.count = inventoryItemIdToCount[item.id];
+      item.count = inventoryItemIdToCount[item._id];
     });
-    callback(inventoryItems);
+    callback(err, inventoryItems);
   });
 };
 

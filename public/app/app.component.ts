@@ -75,7 +75,7 @@ import {GameComponent}    from './components/game';
     { path: '/pages/account', name: 'MyAccount', component: AccountComponent }
 ])
 export class AppComponent {
-    public title = 'Blood and Glory';
+    public title = 'Bedlam and Gold';
     constructor(private http: Http) { }
 
     logOut() {

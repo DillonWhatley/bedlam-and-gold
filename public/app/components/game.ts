@@ -3,6 +3,7 @@ import {Http, Response} from 'angular2/http';
 import {User}              from '../services/user';
 import {UserService}       from '../services/user-service';
 import {GameService}       from '../services/game-service';
+import {InventoryList} from './game/inventory/inventory-list';
 import { Router } from 'angular2/router';
 
 declare var io: any;
@@ -11,6 +12,7 @@ declare var io: any;
     template: `
    <div id="flex-container">
       <h1>Welcome to Bedlam & Gold</h1>
+      <bag-inventory></bag-inventory>
       <div id="server-messages">
         <ul>
           <li *ngFor="#message of serverMessages">{{message}}</li>
@@ -18,13 +20,6 @@ declare var io: any;
       </div>
       <input id="user-input" #message (keyup.enter)="send(message.value)" autofocus>
       <button (click)="createGame()" id="create-game">New Game</button>
-      <div>
-        <ul>
-          <li *ngFor="#user of users">
-            {{ user.name }}
-          </li>
-        </ul>
-      </div>
     </div>
     `,
     styles: [`
@@ -87,7 +82,8 @@ declare var io: any;
         color:rgb(30, 164, 84);
         width:600px;
       }
-      `]
+      `],
+      directives: [InventoryList]
 })
 export class GameComponent implements OnInit{
   errorMessage: string;
@@ -102,17 +98,10 @@ export class GameComponent implements OnInit{
   }
 
   ngOnInit() {
-    this.getUsers();
     var context = this;
     this.socket.on('server-messages', function(msg){
       context.serverMessages.push(msg[0]);
     });
-  }
-  getUsers() {
-    this.userService.getUsers()
-                     .subscribe(
-                       users => this.users = users,
-                       error =>  this.errorMessage = <any>error);
   }
   createGame() {
     this.gameService.create().subscribe(

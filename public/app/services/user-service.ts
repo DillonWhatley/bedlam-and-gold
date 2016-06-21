@@ -9,7 +9,7 @@ import {User}           from './user';
 export class UserService {
   tempUserUrl: string;
   private headers: Headers;
-  private _usersUrl = '/users/Bob';  // URL to web api  
+  private _usersUrl = '/users/Slam';  // URL to web api  
   private tempUrl;
     
   constructor (private http: Http) {

@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-
+var async = require('async');
+var reqCounter;
 var userSchema = new Schema({
     id: Number,
     username: String,
@@ -10,6 +11,7 @@ var userSchema = new Schema({
 });
 
 var User = mongoose.model('User', userSchema);
+
 
 //convenience data access methods
 var userDAO = {
@@ -27,18 +29,122 @@ var userDAO = {
         });
     },
     sendFriendRequest: function (sendee, recipient, callback) {
-        User.findOneAndUpdate(
-            { 'username': recipient },
-            { $push: { friendRequests: sendee } },
-            { safe: true, upsert: true },
-            function (err, model) {
-                console.log(err);
+        console.log("inside DAO request");
+        var notRequested;
+        var notFriends;
+
+        async.series([
+            function (callback) {
+                User.find({ 'username': recipient, 'friendRequests': sendee }, 
+                function (err, users) {
+                    if (users.length == 0) {
+                        notRequested = true;
+                        callback();
+                    }
+                 });
+            },
+
+            function (callback) {
+                User.find({ 'username': recipient, 'friends': sendee }, 
+                function (err, users) {
+                    if (users.length == 0){
+                        notFriends = true;
+                        callback();
+                    }
+                });
+            }],
+            function (err, results){
+                if (notRequested == true && notFriends == true){
+                        User.findOneAndUpdate(
+                            { 'username': recipient },
+                            { $push: { friendRequests: sendee } },
+                            { safe: true, upsert: true },
+                            function (err, model) {
+                                console.log(err);
+                            }
+                        );
+                }
             }
         );
 
 
-        //TODO: Check if pending request exists
 
+
+
+
+        // async.series({
+        //         one: function (callback) {
+        //             console.log("function 1");
+        //             notRequested = false;
+        //             notFriends = false;
+        //             callback(null);
+        //         },
+        //         two: function (callback) {
+        //             console.log("function 2");
+        //             User.count(User.find({ 'username': recipient, 'friendRequests': sendee }),
+        //                 function (err, count) {
+        //                     if (count == 0) {
+        //                         notRequested = true;
+        //                         callback(null, notRequested);
+        //                     }
+        //                 }
+        //             )
+
+        //         },
+        //         three: function (callback) {
+        //             console.log("function 3");
+        //             User.count(User.find({ 'username': recipient, 'friends': sendee }),
+        //                 function (err, count) {
+        //                     if (count == 0) {
+        //                         notFriends = true;
+        //                         callback(notFriends);
+        //                     }
+        //                 }
+        //             )
+
+        //         }
+        //     },
+        //         function (err, results) {
+        //             console.log("function 4" + results);
+        //             console.log("friends: " + results[0] + "request: " + results[1]);
+        //             if (notFriends == true && notRequested == true) {
+                        // User.findOneAndUpdate(
+                        //     { 'username': recipient },
+                        //     { $push: { friendRequests: sendee } },
+                        //     { safe: true, upsert: true },
+                        //     function (err, model) {
+                        //         console.log(err);
+                        //     }
+                        // );
+        //             }
+        //         }
+        //     )
+
+        //    var requestCheck = User.count(User.find({ 'username': recipient, 'friendRequests':sendee }), 
+        //                                      function(err, count) { 
+        //                                         if (count == 0){
+        //                                             notRequested = true;
+        //                                         } 
+        //                                     }
+        //                             );
+        //     var friendCheck = User.count(User.find({ 'username': recipient, 'friends':sendee }), 
+        //             function(err, count) { 
+        //             if (count == 0){
+        //                 notFriends = true;
+        //             } 
+        //         }
+        //      );
+
+        //    if (notFriends == true && notRequested == true){
+        //          User.findOneAndUpdate(
+        //             { 'username': recipient },
+        //             { $push: { friendRequests: sendee } },
+        //             { safe: true, upsert: true },
+        //             function (err, model) {
+        //                 console.log(err);
+        //             }
+        //         );
+        //    }
         //TODO: Check if already friends
 
     },
@@ -73,8 +179,8 @@ var userDAO = {
             }
         );
     },
-    
-     denyFriend: function (sendee, newFriend, callback) {
+
+    denyFriend: function (sendee, newFriend, callback) {
         User.findOneAndUpdate(
             { 'username': sendee },
             { $pull: { friendRequests: newFriend } },
@@ -83,7 +189,7 @@ var userDAO = {
                 console.log(err);
             }
         );
-     }
+    }
 }
 
 module.exports = userDAO;
